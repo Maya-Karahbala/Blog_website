@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebApplication17.Models.Post>
+
+@{
+    ViewData["Title"] = "My Blogs";
+}
+
+<h1>My Blogs</h1>
+<div class="row">
+    <div class="col-sm-9">
+        <p>
+
+            <a asp-action="Create">Create New</a>
+
+        </p>
+    </div>
+    <div class="col-sm-3">
+        <select name="number" class="form-control" onchange="redirect(this.value)">
+            <option value="">Order</option>
+            <option value=1> latest posts </option>
+            <option value=2>oldest posts</option>
+      
+        </select>
+    </div>
+</div>
+
+
+
+<tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <div class="card" style="width: 70rem;">
+
+                <div class="card-body mt-4">
+                    <h5 class="card-title"> @Html.DisplayFor(modelItem => item.Title)</h5>
+                    <p class="card-text"> @Html.DisplayFor(modelItem => item.Content)</p>
+
+
+
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div>CreatingTime: @Html.DisplayFor(modelItem => item.CreatingTime)</div>
+                            <div>Tags: @Html.DisplayFor(modelItem => item.Tags)</div>
+                            <p class="card-text">
+                                Author :
+                                @Html.DisplayFor(modelItem => item.User.FirstName)
+                                @Html.DisplayFor(modelItem => item.User.LastName)
+                            </p>
+                            <p class="card-text">
+                                Categories:
+
+                                @foreach (PostCategory postCategory in (List<PostCategory>)item.PostCategories)
+                                {
+
+                                    @postCategory.Category.Title
+                                    <text>&nbsp;&nbsp;</text>
+
+
+
+                                }
+
+                            </p>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a asp-action="Edit" class="btn btn-primary mr-2" asp-route-id="@item.Id">Edit</a>
+                                <a asp-action="Details" class="btn btn-primary mr-2" asp-route-id="@item.Id">Details</a>
+                                <a asp-action="Delete" class="btn btn-primary mr-2" asp-route-id="@item.Id">Delete</a>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </tr>
+    }
+</tbody>
+<script>
+    function redirect(dropDownValue) {
+        window.location.href = '/Post/Index/' +dropDownValue;
+     
+    }
+</script>
+  
